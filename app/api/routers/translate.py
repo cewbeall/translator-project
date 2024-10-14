@@ -1,6 +1,7 @@
 from fastapi import APIRouter, FastAPI, Query
 
 from app.api.schemas.formality_preference import FormalityPreference
+from app.api.schemas.glossary_languages import GlossaryLangs
 from app.api.schemas.source_languages import SourceLangs
 from app.api.schemas.target_languages import TargetLangs
 from app.translation.translator import Translator
@@ -37,8 +38,8 @@ def translate(
 def create_glossary(
         name: str,
         entries: dict[str, str],
-        source_language: SourceLangs = Query(...),
-        target_language: TargetLangs = Query(...),
+        source_language: GlossaryLangs = Query(...),
+        target_language: GlossaryLangs = Query(...),
     ):
     glossary_info = translator.create_deepl_glossary(
         name=name,
