@@ -8,7 +8,7 @@ class SourceLangs(str, Enum):
     english_gb = "EN-GB"
     spanish = "ES"
     arabic = "AR"
-    geman = "DE"
+    german = "DE"
     chinese_simplified = "ZH-HANS"
     chinese_traditional = "ZH-HANT"
     portuguese_br = "PT-BR"
