@@ -1,8 +1,9 @@
 from enum import Enum
 
 
-class TargetLangs(str, Enum):
-    """Target language options for DeepL translation"""
+class SourceLangs(str, Enum):
+    """Source language options for DeepL translation"""
+    any = "Any"
     english_us = "EN-US"
     english_gb = "EN-GB"
     spanish = "ES"
