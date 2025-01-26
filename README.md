@@ -1,4 +1,4 @@
-# nlp-project
+# translator-project
 
 ## About
 This project is an application that performs translation on bodies of text using DeepL via a wrapper API.
