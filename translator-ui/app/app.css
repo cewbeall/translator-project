@@ -10,3 +10,11 @@ body {
     color-scheme: dark;
   }
 }
+
+#translate-box-group {
+  display: flex;
+  background-color: darkblue;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
