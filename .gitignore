@@ -1,6 +1,18 @@
+# -----translator-----
 .env
 build
 .venv
 __pycache__
 *.egg-info
 .idea
+
+# -----translator-ui-----
+.DS_Store
+node_modules/
+
+# React Router
+.react-router/
+build/
+
+# Netlify
+.netlify
