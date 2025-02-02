@@ -1,20 +1,127 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+/* Overall layout */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f8f8;
+  font-family: 'Roboto', sans-serif;
 }
 
+/* Center everything inside a container */
+#everything {
+  width: 800px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Banner section */
+#banner {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#banner h1 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Container for language selectors and button */
 #translate-box-group {
   display: flex;
-  background-color: darkblue;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Language selector container */
+#selectors {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  gap: 20px;
+}
+
+/* Language Selector (dropdown) */
+#lang-selector {
+  flex: 1;
+}
+
+/* Switch button */
+button {
+  padding: 8px 20px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #3367d6;
+}
+
+/* Text field section */
+#text-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* TextField styling */
+.MuiTextField-root {
+  width: 100%;
+}
+
+.MuiOutlinedInput-root {
+  background-color: #fafafa;
+}
+
+.MuiInputBase-root {
+  border-radius: 10px;
+}
+
+/* Input and translation text fields */
+#text-fields > div {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom styling for each label */
+.MuiInputLabel-root {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Focused field styles */
+.Mui-focused .MuiInputLabel-root {
+  color: #4285f4;
+}
+
+/* Text area rows height adjustment */
+.MuiOutlinedInput-input {
+  padding: 12px;
+  color: black;  /* controls the color of the text in the TextField*/
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+  #everything {
+      width: 100%;
+      padding: 15px;
+  }
+
+  #selectors {
+      flex-direction: column;
+      align-items: stretch;
+  }
+
+  button {
+      margin-top: 10px;
+  }
 }

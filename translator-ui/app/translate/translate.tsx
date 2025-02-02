@@ -1,29 +1,68 @@
-import { TextField } from "@mui/material";
+import { Select, TextField, MenuItem, InputLabel, FormControl, Button } from "@mui/material";
+import {useState} from 'react';
 
 export function Translate() {
+    const [phrase, setPhrase] = useState("");
+
     return (
         <main>
-            <div>
-                <div id="banner"></div>
-                <h1>
-                    Hello there, ready to translate?
-                </h1>
+            <div id="everything">
+                <div id="banner">
+                    <h1>
+                        Translation Station
+                    </h1>
+                </div>
                 <div id="translate-box-group">
-                    <div id="input">
-                        <div id="input-lang-selector"></div>
-                        <div>
-                            <TextField id="outlined-basic" label="Input" variant="outlined" />
+                    <div id="selectors">
+                        <div id="lang-selector">
+                            <LanguageSelector sourceOrTarget={"Source"}/>
+                        </div>
+                        <Button>Switch</Button>
+                        <div id="lang-selector">
+                            <LanguageSelector sourceOrTarget={"Target"}/>
                         </div>
                     </div>
 
-                    <div id="output">
-                        <div id="output-lang-selector"></div>
+                    <div id="text-fields">
                         <div>
-                            <TextField id="outlined-basic" label="Translation" variant="outlined" />
+                            <TextField
+                                id="outlined-basic"
+                                label="Input"
+                                variant="outlined"
+                                multiline={true}
+                                rows={3}
+                                onChange={(e) => setPhrase(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <TextField
+                                id="outlined-basic"
+                                label="Translation"
+                                variant="outlined"
+                                multiline={true}
+                                rows={3}
+                                value={phrase}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+    )
+}
+
+function LanguageSelector({sourceOrTarget}: {sourceOrTarget: string}) {
+    return (
+        <FormControl fullWidth>
+            <InputLabel id="source-lang-select">{sourceOrTarget} Language</InputLabel>
+            <Select
+                labelId="source-lang-select"
+                label="SourceLanguage"
+            >
+                <MenuItem value={"EN"}>English</MenuItem>
+                <MenuItem value={"SP"}>Spanish</MenuItem>
+                <MenuItem value={"IT"}>Italian</MenuItem>
+            </Select>
+        </FormControl>
     )
 }
