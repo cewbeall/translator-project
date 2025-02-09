@@ -22,6 +22,58 @@ export function Translate() {
         setTargetLanguage(event.target.value)
     }
 
+    const swapSourceAndTarget = () => {
+        // Save languages in vars before they are swapped
+        var newSource
+        var newTarget
+
+        // Logic to check if the new language is available as source/target
+        switch (sourceLanguage) {
+            case 'Any':
+                newTarget = 'EN-US'
+                break
+            case 'EN':
+                newTarget = 'EN-US'
+                break
+            case 'PT':
+                newTarget = 'PT-BR'
+                break
+            case 'ZH':
+                newTarget = 'ZH-HANT'
+                break
+            default:
+                newTarget = sourceLanguage
+
+        }
+
+        switch (targetLanguage) {
+            case 'EN-US':
+                newSource = 'EN'
+                break
+            case 'EN-GB':
+                newSource = 'EN'
+                break
+            case 'PT-BR':
+                newSource = 'PT'
+                break
+            case 'PT-PT':
+                newSource = 'PT'
+                break
+            case 'ZH-HANT':
+                newSource = 'ZH'
+                break
+            case 'ZH-HANS':
+                newSource = 'ZH'
+                break
+            default:
+                newSource = targetLanguage
+        }
+
+        // Swap the languages
+        setSourceLanguage(newSource)
+        setTargetLanguage(newTarget)
+    }
+
     const requestTranslation = async (
         translationPhrase: string,
         sourceLanguage: string,
@@ -75,7 +127,7 @@ export function Translate() {
                         <div id="lang-selector">
                             <SourceLanguageSelector value={sourceLanguage} onChange={handleSourceLanguageChange}/>
                         </div>
-                        <Button>Switch</Button>
+                        <Button onClick={swapSourceAndTarget}>Switch</Button>
                         <div id="lang-selector">
                             <TargetLanguageSelector value={targetLanguage} onChange={handleTargetLanguageChange}/>
                         </div>
