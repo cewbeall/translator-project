@@ -4,6 +4,48 @@ import {useState} from 'react';
 export function Translate() {
     const [phrase, setPhrase] = useState("");
 
+    const requestTranslation = async (
+        translationPhrase: string,
+        sourceLanguage: string = 'EN',
+        targetLanguage: string = 'ES',
+        formality: string = 'default'
+    ) => {
+
+        const params = new URLSearchParams({
+            text: translationPhrase,
+            source_language: sourceLanguage,
+            target_language: targetLanguage,
+            formality: formality
+        })
+        const url = `http://localhost:9000/translate?${params.toString()}`
+
+        // Send translation to API
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // body: JSON.stringify({
+                //     text: translationPhrase,
+                //     source_language: sourceLanguage,
+                //     target_language: targetLanguage,
+                //     formality: formality
+                // })
+            })
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const responseData = await response.json()
+            const translatedText = responseData["translated_text"]["text"]
+            setPhrase(translatedText)
+        } catch (error) {
+            console.error("There was an error retrieving the translation.")
+        }
+    }
+
     return (
         <main>
             <div id="everything">
@@ -15,11 +57,15 @@ export function Translate() {
                 <div id="translate-box-group">
                     <div id="selectors">
                         <div id="lang-selector">
-                            <LanguageSelector sourceOrTarget={"Source"}/>
+                            <LanguageSelector 
+                                sourceOrTarget={"Source"}
+                            />
                         </div>
                         <Button>Switch</Button>
                         <div id="lang-selector">
-                            <LanguageSelector sourceOrTarget={"Target"}/>
+                            <LanguageSelector
+                                sourceOrTarget={"Target"}
+                            />
                         </div>
                     </div>
 
@@ -31,7 +77,7 @@ export function Translate() {
                                 variant="outlined"
                                 multiline={true}
                                 rows={3}
-                                onChange={(e) => setPhrase(e.target.value)}
+                                onChange={(e) => requestTranslation(e.target.value)}
                             />
                         </div>
                         <div>
@@ -52,12 +98,15 @@ export function Translate() {
 }
 
 function LanguageSelector({sourceOrTarget}: {sourceOrTarget: string}) {
+    // const [sourceLanguage, setSourceLanguage] = useState("")
+    // const [targetLanguage, setTargetLanguage] = useState("")
+
     return (
         <FormControl fullWidth>
-            <InputLabel id="source-lang-select">{sourceOrTarget} Language</InputLabel>
+            <InputLabel id="lang-select">{sourceOrTarget} Language</InputLabel>
             <Select
-                labelId="source-lang-select"
-                label="SourceLanguage"
+                labelId="lang-select"
+                label="language"
             >
                 <MenuItem value={"EN"}>English</MenuItem>
                 <MenuItem value={"SP"}>Spanish</MenuItem>

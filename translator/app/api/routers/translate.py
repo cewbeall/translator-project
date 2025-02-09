@@ -1,4 +1,5 @@
 from fastapi import APIRouter, FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.schemas.formality_preference import FormalityPreference
 from app.api.schemas.glossary_languages import GlossaryLangs
@@ -11,7 +12,21 @@ router: APIRouter = APIRouter()
 
 translator = Translator()
 
+origins = [
+    # TODO: Add url for deployed site
+    "http://localhost:3000"
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# TODO: Change to pydantic model input
 @router.post("/translate")
 def translate(
         text: str,

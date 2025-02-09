@@ -3,25 +3,25 @@ SHELL := /bin/bash
 .PHONY: build up stop remove clean down start
 
 build:
-	@docker build -t translatorapp .
+	@docker build -t translator .
 
 up:
-	@docker run --name translatorapp -d -p 9000\:9000 translatorapp
+	@docker run --name translator -d -p 9000\:9000 translator
 
 stop:
-	@docker stop translatorapp
+	@docker stop translator
 
 remove:
-	@docker rm translatorapp
+	@docker rm translator
 
 clean:
-	@docker rmi translatorapp
+	@docker rmi translator
 
 down:
-	@docker stop translatorapp
-	@docker rm translatorapp
-	@docker rmi translatorapp
+	@docker stop translator
+	@docker rm translator
+	@docker rmi translator
 
 start:
-	@docker build -t translatorapp .
-	@docker run --name translatorapp -d -p 9000\:9000 translatorapp
+	@docker build -t translator .
+	@docker run --name translator -d -p 9000\:9000 translator
