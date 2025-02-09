@@ -1,15 +1,37 @@
 import { Select, TextField, MenuItem, InputLabel, FormControl, Button } from "@mui/material";
-import {useState} from 'react';
+import { type SelectChangeEvent } from '@mui/material/Select';
+import React, {useState} from 'react';
 
+// Defining an interface for passing props to the Select module from MUI
+interface CustomSelectProps {
+    value: string;
+    onChange: (event: SelectChangeEvent) => void;
+}
+
+// Controls the interaction with the API
 export function Translate() {
     const [phrase, setPhrase] = useState("");
+    const [sourceLanguage, setSourceLanguage] = useState("Any");
+    const [targetLanguage, setTargetLanguage] = useState("EN-US");
+
+    const handleSourceLanguageChange = (event: SelectChangeEvent) => {
+        setSourceLanguage(event.target.value)
+    }
+
+    const handleTargetLanguageChange = (event: SelectChangeEvent) => {
+        setTargetLanguage(event.target.value)
+    }
 
     const requestTranslation = async (
         translationPhrase: string,
-        sourceLanguage: string = 'EN',
-        targetLanguage: string = 'ES',
+        sourceLanguage: string,
+        targetLanguage: string,
         formality: string = 'default'
     ) => {
+        // End function if the text is empty
+        if (!translationPhrase) {
+            return
+        }
 
         const params = new URLSearchParams({
             text: translationPhrase,
@@ -26,12 +48,6 @@ export function Translate() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // body: JSON.stringify({
-                //     text: translationPhrase,
-                //     source_language: sourceLanguage,
-                //     target_language: targetLanguage,
-                //     formality: formality
-                // })
             })
 
             if (!response.ok) {
@@ -57,15 +73,11 @@ export function Translate() {
                 <div id="translate-box-group">
                     <div id="selectors">
                         <div id="lang-selector">
-                            <LanguageSelector 
-                                sourceOrTarget={"Source"}
-                            />
+                            <SourceLanguageSelector value={sourceLanguage} onChange={handleSourceLanguageChange}/>
                         </div>
                         <Button>Switch</Button>
                         <div id="lang-selector">
-                            <LanguageSelector
-                                sourceOrTarget={"Target"}
-                            />
+                            <TargetLanguageSelector value={targetLanguage} onChange={handleTargetLanguageChange}/>
                         </div>
                     </div>
 
@@ -77,7 +89,7 @@ export function Translate() {
                                 variant="outlined"
                                 multiline={true}
                                 rows={3}
-                                onChange={(e) => requestTranslation(e.target.value)}
+                                onChange={(e) => requestTranslation(e.target.value, sourceLanguage, targetLanguage)}
                             />
                         </div>
                         <div>
@@ -97,20 +109,100 @@ export function Translate() {
     )
 }
 
-function LanguageSelector({sourceOrTarget}: {sourceOrTarget: string}) {
-    // const [sourceLanguage, setSourceLanguage] = useState("")
-    // const [targetLanguage, setTargetLanguage] = useState("")
+// Controls the values of the source language
+export const SourceLanguageSelector: React.FC<CustomSelectProps> = ({ onChange, value }) => {
 
     return (
         <FormControl fullWidth>
-            <InputLabel id="lang-select">{sourceOrTarget} Language</InputLabel>
+            <InputLabel id="lang-select">Source Language</InputLabel>
             <Select
                 labelId="lang-select"
                 label="language"
+                defaultValue="Any"
+                value={value}
+                onChange={onChange}
             >
+                <MenuItem value={"Any"}>Any</MenuItem>
+                <MenuItem value={"AR"}>Arabic</MenuItem>
+                <MenuItem value={"BG"}>Bulgarian</MenuItem>
+                <MenuItem value={"CS"}>Czech</MenuItem>
+                <MenuItem value={"DA"}>Danish</MenuItem>
+                <MenuItem value={"DE"}>German</MenuItem>
+                <MenuItem value={"EL"}>Greek</MenuItem>
                 <MenuItem value={"EN"}>English</MenuItem>
-                <MenuItem value={"SP"}>Spanish</MenuItem>
+                <MenuItem value={"ES"}>Spanish</MenuItem>
+                <MenuItem value={"ET"}>Estonian</MenuItem>
+                <MenuItem value={"FI"}>Finnish</MenuItem>
+                <MenuItem value={"FR"}>French</MenuItem>
+                <MenuItem value={"HU"}>Hungarian</MenuItem>
+                <MenuItem value={"ID"}>Indonesian</MenuItem>
                 <MenuItem value={"IT"}>Italian</MenuItem>
+                <MenuItem value={"JA"}>Japanese</MenuItem>
+                <MenuItem value={"KO"}>Korean</MenuItem>
+                <MenuItem value={"LT"}>Lithuanian</MenuItem>
+                <MenuItem value={"LV"}>Latvian</MenuItem>
+                <MenuItem value={"NB"}>Norwegian</MenuItem>
+                <MenuItem value={"NL"}>Dutch</MenuItem>
+                <MenuItem value={"PL"}>Polish</MenuItem>
+                <MenuItem value={"PT"}>Portuguese</MenuItem>
+                <MenuItem value={"RO"}>Romanian</MenuItem>
+                <MenuItem value={"RU"}>Russian</MenuItem>
+                <MenuItem value={"SK"}>Slovak</MenuItem>
+                <MenuItem value={"SL"}>Slovenian</MenuItem>
+                <MenuItem value={"SV"}>Swedish</MenuItem>
+                <MenuItem value={"TR"}>Turkish</MenuItem>
+                <MenuItem value={"UK"}>Ukrainian</MenuItem>
+                <MenuItem value={"ZH"}>Chinese</MenuItem>
+            </Select>
+        </FormControl>
+    )
+}
+
+// Controls the values of the target language
+export const TargetLanguageSelector: React.FC<CustomSelectProps> = ({ onChange, value }) => {
+
+    return (
+        <FormControl fullWidth>
+            <InputLabel id="lang-select">Target Language</InputLabel>
+            <Select
+                labelId="lang-select"
+                label="language"
+                defaultValue="EN-US"
+                value={value}
+                onChange={onChange}
+            >
+                <MenuItem value={"AR"}>Arabic</MenuItem>
+                <MenuItem value={"BG"}>Bulgarian</MenuItem>
+                <MenuItem value={"CS"}>Czech</MenuItem>
+                <MenuItem value={"DA"}>Danish</MenuItem>
+                <MenuItem value={"DE"}>German</MenuItem>
+                <MenuItem value={"EL"}>Greek</MenuItem>
+                <MenuItem value={"EN-GB"}>English (UK)</MenuItem>
+                <MenuItem value={"EN-US"}>English (US)</MenuItem>
+                <MenuItem value={"ES"}>Spanish</MenuItem>
+                <MenuItem value={"ET"}>Estonian</MenuItem>
+                <MenuItem value={"FI"}>Finnish</MenuItem>
+                <MenuItem value={"FR"}>French</MenuItem>
+                <MenuItem value={"HU"}>Hungarian</MenuItem>
+                <MenuItem value={"ID"}>Indonesian</MenuItem>
+                <MenuItem value={"IT"}>Italian</MenuItem>
+                <MenuItem value={"JA"}>Japanese</MenuItem>
+                <MenuItem value={"KO"}>Korean</MenuItem>
+                <MenuItem value={"LT"}>Lithuanian</MenuItem>
+                <MenuItem value={"LV"}>Latvian</MenuItem>
+                <MenuItem value={"NB"}>Norwegian (Bokmal)</MenuItem>
+                <MenuItem value={"NL"}>Dutch</MenuItem>
+                <MenuItem value={"PT-BR"}>Portuguese (Brazil)</MenuItem>
+                <MenuItem value={"PT-PT"}>Portuguese (Portugal)</MenuItem>
+                <MenuItem value={"RO"}>Romanian</MenuItem>
+                <MenuItem value={"RU"}>Russian</MenuItem>
+                <MenuItem value={"SK"}>Slovak</MenuItem>
+                <MenuItem value={"SL"}>Slovenian</MenuItem>
+                <MenuItem value={"SV"}>Swedish</MenuItem>
+                <MenuItem value={"TR"}>Turkish</MenuItem>
+                <MenuItem value={"UK"}>Ukranian</MenuItem>
+                <MenuItem value={"ZH-HANT"}>Chinese (Traditional)</MenuItem>
+                <MenuItem value={"ZH-HANS"}>Chinese (Simplified)</MenuItem>
             </Select>
         </FormControl>
     )
