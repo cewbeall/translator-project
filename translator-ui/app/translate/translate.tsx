@@ -13,6 +13,8 @@ export function Translate() {
     const [phrase, setPhrase] = useState("");
     const [sourceLanguage, setSourceLanguage] = useState("Any");
     const [targetLanguage, setTargetLanguage] = useState("EN-US");
+    const [formality, setFormality] = useState("default");
+    const [context, setContext] = useState("");
 
     const handleSourceLanguageChange = (event: SelectChangeEvent) => {
         setSourceLanguage(event.target.value)
@@ -20,6 +22,10 @@ export function Translate() {
 
     const handleTargetLanguageChange = (event: SelectChangeEvent) => {
         setTargetLanguage(event.target.value)
+    }
+
+    const handleFormalityChange = (event: SelectChangeEvent) => {
+        setFormality(event.target.value)
     }
 
     const swapSourceAndTarget = () => {
@@ -78,10 +84,12 @@ export function Translate() {
         translationPhrase: string,
         sourceLanguage: string,
         targetLanguage: string,
-        formality: string = 'default'
+        formality: string,
+        context: string
     ) => {
         // End function if the text is empty
         if (!translationPhrase) {
+            setPhrase("")
             return
         }
 
@@ -89,7 +97,8 @@ export function Translate() {
             text: translationPhrase,
             source_language: sourceLanguage,
             target_language: targetLanguage,
-            formality: formality
+            formality: formality,
+            context: context
         })
         const url = `http://localhost:9000/translate?${params.toString()}`
 
@@ -141,7 +150,7 @@ export function Translate() {
                                 variant="outlined"
                                 multiline={true}
                                 rows={3}
-                                onChange={(e) => requestTranslation(e.target.value, sourceLanguage, targetLanguage)}
+                                onChange={(e) => requestTranslation(e.target.value, sourceLanguage, targetLanguage, formality, context)}
                             />
                         </div>
                         <div>
@@ -155,11 +164,44 @@ export function Translate() {
                             />
                         </div>
                     </div>
+                    <div>
+                        <FormalitySelector value={formality} onChange={handleFormalityChange}/>
+                    </div>
+                    <div>
+                        <TextField
+                            id="outlined-basic"
+                            label="Context"
+                            variant="outlined"
+                            multiline={true}
+                            rows={2}
+                            onChange={(e) => setContext(e.target.value)}
+                        />
+                    </div>
                 </div>
             </div>
         </main>
     )
 }
+
+// Controls the values of the translation formality
+export const FormalitySelector: React.FC<CustomSelectProps> = ({ onChange, value }) => {
+    return (
+        <FormControl fullWidth>
+            <InputLabel id="formality-select">Formality Level</InputLabel>
+            <Select
+                onChange={onChange}
+                defaultValue="default"
+            >
+                <MenuItem value={"default"}>Default</MenuItem>
+                <MenuItem value={"more"}>More Formal</MenuItem>
+                <MenuItem value={"less"}>Less Formal</MenuItem>
+                <MenuItem value={"prefer_more"}>Prefer More Formal</MenuItem>
+                <MenuItem value={"prefer_less"}>Prefer Less Formal</MenuItem>
+            </Select>
+        </FormControl>
+    )
+}
+
 
 // Controls the values of the source language
 export const SourceLanguageSelector: React.FC<CustomSelectProps> = ({ onChange, value }) => {
